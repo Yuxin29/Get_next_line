@@ -6,13 +6,13 @@
 /*   By: yuwu <yuwu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:20:20 by yuwu              #+#    #+#             */
-/*   Updated: 2025/05/15 11:52:51 by yuwu             ###   ########.fr       */
+/*   Updated: 2025/05/15 14:35:54 by yuwu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static size_t	ft_strlen(char *str)
+size_t	ft_strlen(char *str)
 {
 	size_t	count;
 
@@ -23,7 +23,7 @@ static size_t	ft_strlen(char *str)
 }
 
 /* this helper is to find \n the newline  */
-static char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *str, int c)
 {
 	chat	*str_cpy;
 
@@ -36,7 +36,7 @@ static char	*ft_strchr(const char *str, int c)
 }
 
 /*below are for memory safe str_operatios    */
-static char	*ft_strdup(char *str)
+char	*ft_strdup(char *str)
 {
 	char	*dup;
 	size_t	length;
@@ -56,7 +56,7 @@ static char	*ft_strdup(char *str)
 }
 
 /* this helper is to find \n the newline  */
-static char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *str, int c)
 {
 	chat	*str_cpy;
 
@@ -68,7 +68,7 @@ static char	*ft_strchr(const char *str, int c)
 	return (str_cpy);
 }
 
-static char	*ft_strjoin(char *str1, char *str2)
+char	*ft_strjoin(char *str1, char *str2)
 {
 	size_t	l1;
 	size_t	l2;
@@ -97,10 +97,21 @@ static char	*ft_strjoin(char *str1, char *str2)
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	...
-}
+	size_t	leng_s;
+	char	*sub;	
+	size_t	count;
 
-void ft_get_next_line_utils(void)
-{
-	...
+	leng_s = ft_strlen(s);
+	if (start > leng_s - 1)
+		return (NULL);
+	sub = malloc(sizeof(char) * (len + 1));
+	if (!sub)
+		return (NULL);
+	while (count < len && s[start + count])
+	{
+		sub[count] = s[start + count];
+		count++;
+	}
+	sub[count] = '\0';
+	return (sub);
 }

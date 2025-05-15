@@ -15,5 +15,6 @@
 
 #include <stdlib.h>		//malloc and free
 #include <fcntl.h>		//header for file control systems: open and read
+#include <stdarg.h>		//for variable arguments
 
 #endif

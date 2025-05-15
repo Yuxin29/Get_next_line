@@ -13,19 +13,25 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#include <stdlib.h>		//malloc and free
-#include <fcntl.h>		//header for file control systems: open and read
-#include <stdarg.h>		//for variable arguments
+#include <stdlib.h>//malloc and free
+#include <fcntl.h>//header for file control systems: open and 0_RDONLY
+#include <unistd.h>//read
+//#include <stdarg.h> for variable arguments
+
+#define BUFFER_SIZE 5
 
 //major functions
-char    *ft_get_next_line(int fd);
+char	*ft_get_next_line(int fd);
 
 //helper functions
-size_t   ft_strlen(char *str);
-char    *ft_strchr(const char *str, int c);
-char    *ft_strdup(char *str);
-char    *ft_strchr(const char *str, int c);
-char    *ft_strjoin(char *str1, char *str2);
-char    *ft_substr(char const *s, unsigned int start, size_t len);
+size_t	ft_strlen(char *str);
+char	*ft_strchr(const char *str, int c);
+char	*ft_strdup(char *str);
+char	*ft_strchr(const char *str, int c);
+char	*ft_strjoin(char *str1, char *str2);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif
+
+
+// cc -Wall -Wextra -Werror -fsanitize=address -fsanitize=leak -fsanitize=undefined -ggdb3 *.c && ./a.out

@@ -12,36 +12,15 @@
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
-{
-	size_t	count;
-
-	count = 0;
-	while (str[count])
-		count++;
-	return (count);
-}
-
-/* this helper is to find \n the newline  */
-char	*ft_strchr(const char *str, int c)
-{
-	chat	*str_cpy;
-
-	str_cpy = ft_strdup(str);
-	if (!str_cpy)
-		return (NULL);
-	while (*str_cpy && *str_coy != c)
-		str_cpy++;
-	return (str_cpy);
-}
-
 /*below are for memory safe str_operatios    */
 char	*ft_strdup(char *str)
 {
 	char	*dup;
 	size_t	length;
 
-	length = ft_strlen(str);
+	length = 0;
+	while (str[length])
+		length++;
 	dup = malloc(sizeof(char) * (length + 1))
 	if (!dup)
 		return (NULL);
@@ -68,29 +47,38 @@ char	*ft_strchr(const char *str, int c)
 	return (str_cpy);
 }
 
+/* this helper is to find \n the newline  */
+char	*ft_strchr(const char *str, int c)
+{
+	chat	*str_cpy;
+
+	str_cpy = ft_strdup(str);
+	if (!str_cpy)
+		return (NULL);
+	while (*str_cpy && *str_coy != c)
+		str_cpy++;
+	return (str_cpy);
+}
+
 char	*ft_strjoin(char *str1, char *str2)
 {
 	size_t	l1;
 	size_t	l2;
 	char	*join;
 
-	l1 = ft_strlen(str1);
-	l2 = ft_strlen(str2);
+	l1 = 0;
+	l2 = 0;
+	while (str1[l1])
+		l1++;
+	while (str2[l2])
+		l2++;
 	join = malloc(sizeof(char) * (l1 + l2 + 1));
 	if (!join)
 		return (NULL);
 	while (*str1)
-	{
-		*join = *str1;
-		join++;
-		str1++;
-	}
+		*(join++) = *(str1++);
 	while (*str2)
-	{
-		*join = *str2;
-		join++;
-		str2++;
-	}
+		*(join++) = *(str1++);
 	*join = '\0';
 	return (join);
 }
@@ -101,7 +89,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*sub;	
 	size_t	count;
 
-	leng_s = ft_strlen(s);
+	leng_s = 0;
+	while (s[leng_s])
+		leng_s++;
 	if (start > leng_s - 1)
 		return (NULL);
 	sub = malloc(sizeof(char) * (len + 1));

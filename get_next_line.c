@@ -29,15 +29,15 @@ static char	*ft_get_buffer(int fd, char *left_c)
 		return (NULL);
 	while (!left_c || (!ft_strchr(left_c, '\n') && bytes_read > 0))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE); //buffer is the dest of this read
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
 			free (buffer);
-			free (temp); //do we need to?
+			free (temp);
 			return (NULL);
 		}
-		buffer[bytes_read] = '\0';//null-terminating
-		temp = ft_strjoin(left_c, buffer);//including NULL + buffer
+		buffer[bytes_read] = '\0';
+		temp = ft_strjoin(left_c, buffer);
 		if (!temp)
 		{
 			free (buffer);
@@ -46,39 +46,49 @@ static char	*ft_get_buffer(int fd, char *left_c)
 		free(left_c);
 		left_c = temp;
 	}
-	free (buffer); //buffers job done //free (temp);  //do I not need to here???
+	free (buffer);
 	return (left_c);
+}
+
+static char *ft_get_leftover(char *full)
+{
+	int	i;
+	char	*tmp;
+	
+	i = 0;
+	while (full[i] && full[i] != '\n')
+		i++;
+	i++;
+	tmp = ft_substr(full, i, ft_strlen(full) - i);
+	if (!tmp)
+	{
+		free(full);
+		return (NULL);
+	}
+	full = tmp;
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*remainder;
-	char		*tmp;
 	char		*line;
 	int		i;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-    	remainder = ft_get_buffer(fd, remainder);  //works even whe remainder is emtpyy
+    	remainder = ft_get_buffer(fd, remainder);
 	if (!remainder)
-		return (NULL);  //NULL includes every type of erros in ft_get_buffer
-	i = 0;
-	while (remainder[i] && remainder[i] != '\n')  //it goes to every 5 bytes read
-		i++;
-	i++;   //in the last 5 bytes, only until \n is counted
-	line = ft_substr(remainder, 0, i);//find the first line including the tab
-	if (!line)
-		return (NULL);  //there is malloc in substr, so !line check needed
-	tmp = ft_substr(remainder, i, ft_strlen(remainder) - i);
-	if (!tmp)
-	{
-		free(line);
-		free(remainder);
 		return (NULL);
-	}
-	free(remainder);  //this remainder job done
-	remainder = tmp;  //now  remainder is the left-over bytes from last buffer
-	if (!*remainder)  //this check is in case of EOF
+	i = 0;
+	while (remainder[i] && remainder[i] != '\n')
+		i++;
+	i++;
+	line = ft_substr(remainder, 0, i);
+	if (!line)
+		return (NULL);
+	remainder = ft_get_leftover(remainder);
+	if (!*remainder)
 	{
 		free (remainder);
 		remainder = NULL;

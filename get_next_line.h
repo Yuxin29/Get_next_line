@@ -18,10 +18,10 @@
 #include <unistd.h>//read
 //#include <stdarg.h> for variable arguments
 
-#define BUFFER_SIZE 5
+//#define BUFFER_SIZE 5
 
 //major functions
-char	*ft_get_next_line(int fd);
+char	*get_next_line(int fd);
 
 //helper functions
 size_t	ft_strlen(char *str);

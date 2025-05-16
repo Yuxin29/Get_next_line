@@ -10,10 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-/* access a file */
-/* [, int mode ] this is optional: only when a new file is created */
+/*
+- access a file
 static int	ft_open(const char* path, int flags [, int mode ])
 {
 	int	re_value;//if return small, non_neg int as fd, -1 on erros
@@ -21,9 +19,9 @@ static int	ft_open(const char* path, int flags [, int mode ])
 	re_value = open(path, flags);//flags could be: O_RDONLY, O_WTONLY...	
 	return (re_value);//0, 1, 2.     and addtional opens: 3, 4
 }
+[, int mode ] this is optional: only when a new file is created
 
-/* read a file */
-//ssize_t: signed version of size_t, represents both nbrs and errors
+- read a file 
 static ssize_t	ft_read(int fildes, void *buf, size_t nbyte)
 {
 	ssize_t	r;
@@ -31,17 +29,34 @@ static ssize_t	ft_read(int fildes, void *buf, size_t nbyte)
 	r = ft_read(fildes, buf, nbyte);
 	return (r);//+: number of bites read, 0:EOF, -1: erros occured
 }
+*/
 
-int	main(void)
+#include "get_next_line.h"
+#include <stdio.h>
+
+int	main(int argc, char **argv)
 {
-	int	fd;
+	int		fd;
+	char	*line;
 
-	fd = ft_open("gnl_test"; 0_RDONLY);	
-	if (fd == -1)
+	if (argc != 2)
 	{
-		write(1, "error", 5);
+		printf("Error program number");
 		return (0);
 	}
-	ft_read;  	//opening successful, can go to next step
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error opening file");
+		return (0);
+	}
+	line = get_next_line(fd);
+	while (line)
+	{
+		printf("%s", line);
+        	free(line);
+		line = get_next_line(fd);
+	}
+	//close(fd);
 	return (0);
 }

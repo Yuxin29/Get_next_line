@@ -15,31 +15,11 @@
 size_t	ft_strlen(char *str)
 {
 	size_t	count;
-	
+
 	count = 0;
 	while (str[count])
 		count++;
 	return (count);
-}
-
-char	*ft_strdup(char *str)
-{
-	char	*dup;
-	size_t	length;
-
-	length = 0;
-	length = ft_strlen(str);
-	dup = malloc(sizeof(char) * (length + 1));
-	if (!dup)
-		return (NULL);
-	length = 0;
-	while (str[length])
-	{
-		dup[length] = str[length];
-		length++;
-	}
-	dup[length] = '\0';
-	return (dup);
 }
 
 char	*ft_strchr(const char *str, int c)
@@ -47,11 +27,11 @@ char	*ft_strchr(const char *str, int c)
 	while (*str)
 	{
 		if (*str == c)
-			return (char *)(str);
+			return ((char *)str);
 		str++;
 	}
 	if (c == '\0')
-		return (char *)(str);
+		return ((char *)str);
 	return (NULL);
 }
 
@@ -74,25 +54,30 @@ char	*ft_strjoin(char *str1, char *str2)
 	if (!join)
 		return (NULL);
 	i = 0;
-	if (str1)
+	while (i < l1)
 	{
-		while (str1[i])
-		{
-			join[i] = str1[i];
-			i++;
-		}
+		join[i] = str1[i];
+		i++;
 	}
 	i = 0;
-	if (str2)
+	while (i < l2)
 	{
-		while (str2[i])
-		{
-			join[l1 + i] = str2[i];
-			i++;
-		}
+		join[l1 + i] = str2[i];
+		i++;
 	}
 	join[l1 + l2] = '\0';
 	return (join);
+}
+
+static char	*get_empty(void)
+{
+	char	*empty;
+
+	empty = malloc(sizeof(char) * 1);
+	if (!empty)
+		return (NULL);
+	empty[0] = '\0';
+	return (empty);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -105,7 +90,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	max = ft_strlen((char *)s);
 	if (start >= max)
-		return (ft_strdup(""));
+		return (get_empty());
 	if (start + len <= max)
 		sub = malloc(sizeof(char) * (len + 1));
 	else

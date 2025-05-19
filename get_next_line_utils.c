@@ -17,6 +17,8 @@ size_t	ft_strlen(char *str)
 	size_t	count;
 
 	count = 0;
+	if (!str)
+		return (count);
 	while (str[count])
 		count++;
 	return (count);
@@ -42,14 +44,8 @@ char	*ft_strjoin(char *str1, char *str2)
 	char	*join;
 	size_t	i;
 
-	if (!str1)
-		l1 = 0;
-	else
-		l1 = ft_strlen(str1);
-	if (!str2)
-		l2 = 0;
-	else
-		l2 = ft_strlen(str2);
+	l1 = ft_strlen(str1);
+	l2 = ft_strlen(str2);
 	join = malloc(sizeof(char) * (l1 + l2 + 1));
 	if (!join)
 		return (NULL);
@@ -69,17 +65,6 @@ char	*ft_strjoin(char *str1, char *str2)
 	return (join);
 }
 
-static char	*get_empty(void)
-{
-	char	*empty;
-
-	empty = malloc(sizeof(char) * 1);
-	if (!empty)
-		return (NULL);
-	empty[0] = '\0';
-	return (empty);
-}
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*sub;
@@ -90,11 +75,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	max = ft_strlen((char *)s);
 	if (start >= max)
-		return (get_empty());
-	if (start + len <= max)
-		sub = malloc(sizeof(char) * (len + 1));
-	else
-		sub = malloc(sizeof(char) * (max - start + 1));
+		len = 0;
+	if (start + len > max)
+		len = max - start;
+	sub = malloc(sizeof(char) * (len + 1));
 	if (!(sub))
 		return (NULL);
 	n = 0;

@@ -18,7 +18,7 @@ notes of new things used in get_next_line
 
 #include "get_next_line.h"
 
-static char	*ft_get_buffer(int fd, char *left_c)
+static char	*ft_read_buffer(int fd, char *left_c)
 {
 	ssize_t		bytes_read;
 	char		*buffer;
@@ -33,98 +33,44 @@ static char	*ft_get_buffer(int fd, char *left_c)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			free (buffer);
-			free (temp);
-			return (NULL);
-		}
+			return (free(buffer), NULL);
 		if (bytes_read == 0)
-			break;
+			break ;
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(left_c, buffer);
 		if (!temp)
-		{
-			free (buffer);
-			free (left_c);
-			return (NULL);
-		}
+			return (free(buffer), NULL);
 		free(left_c);
 		left_c = temp;
 	}
 	free (buffer);
-	if (!left_c || left_c[0] == '\0')
-	{
-		free(left_c);
-		return (NULL);
-	}
 	return (left_c);
-}
-/*
-static size_t	count_chars(char *str)
-{
-	size_t	count;
-	
-	while (str[count] && str[count] != '\n')
-		count++;
-	if (str[count] == '\n')
-		count++;
-	return (count);
-}
-*/
-static char	*ft_get_leftover(char *full)
-{
-	size_t	i;
-	char	*leftover;
-
-	if (!full)
-		return (NULL);
-	i = 0;
-	/*if (full[0])
-		i = count_chars(full);*/
-	while (full[i] && full[i] != '\n')
-		i++;
-	if (full[i] == '\n')
-		i++;
-	leftover = ft_substr(full, i, ft_strlen(full) - i);
-	if (!leftover)
-	{
-		free (full);
-		return (NULL);
-	}
-	free (full);
-	return (leftover);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*remainder;
 	char		*line;
+	char		*temp;
 	size_t		i;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	remainder = ft_get_buffer(fd, remainder);
-	if (!remainder)
-		return (NULL);
+	remainder = ft_read_buffer(fd, remainder);
+	if (!remainder || !remainder[0])
+		return (free(remainder), remainder = NULL, NULL);
 	i = 0;
-	/*if (remainder[0])
-		i = count_chars(remainder);*/
 	while (remainder[i] && remainder[i] != '\n')
 		i++;
 	if (remainder[i] == '\n')
 		i++;
 	line = ft_substr(remainder, 0, i);
 	if (!line)
-	{	
-		free (remainder);
-		remainder = NULL;
-		return (NULL);
-	}
-	remainder = ft_get_leftover(remainder);
-	if (!*remainder)
-	{
-		free (remainder);
-		remainder = NULL;
-	}
+		return (free (remainder), remainder = NULL, NULL);
+	temp = ft_substr(remainder, i, ft_strlen(remainder) - i);
+	free (remainder);
+	remainder = temp;
+	if (!remainder || !*remainder)
+		return (free (remainder), remainder = NULL, line);
 	return (line);
 }

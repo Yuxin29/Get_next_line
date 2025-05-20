@@ -54,9 +54,8 @@ int	main(int argc, char **argv)
 	while (line)
 	{
 		printf("%s", line);
-        	free(line);
+		free (line);
 		line = get_next_line(fd);
 	}
-	//close(fd);
 	return (0);
 }

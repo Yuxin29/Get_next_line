@@ -6,7 +6,7 @@
 /*   By: yuwu <yuwu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 20:34:35 by yuwu              #+#    #+#             */
-/*   Updated: 2025/05/20 20:35:57 by yuwu             ###   ########.fr       */
+/*   Updated: 2025/05/22 14:47:56 by yuwu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
-# include <fcntl.h>
 # include <unistd.h>
-//# include <limits.h>
 
-#define BUFFER_SIZE 5
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
+
+# ifndef READ_MAX
+#  define READ_MAX 1024
+# endif
 
 char	*get_next_line(int fd);
 

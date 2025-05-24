@@ -26,36 +26,35 @@ static char	*ft_read_buffer(int fd, char *left_c)
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (NULL);
+		return (free(left_c), NULL);
 	bytes_read = 1;
 	temp = NULL;
 	while (!left_c || (!ft_strchr(left_c, '\n') && bytes_read > 0))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
-			return (free(buffer), NULL);
+			return (free(buffer), free(left_c), NULL);
 		if (bytes_read == 0)
 			break ;
 		buffer[bytes_read] = '\0';
 		temp = ft_strjoin(left_c, buffer);
 		if (!temp)
-			return (free(buffer), NULL);
+			return (free(buffer), free(left_c), NULL);
 		free(left_c);
 		left_c = temp;
 	}
-	free (buffer);
-	return (left_c);
+	return (free(buffer), left_c);
 }
 
 char	*get_next_line(int fd)
 
 {
-	static char	*remainder[1024];
+	static char	*remainder[READ_MAX];
 	char		*line;
 	char		*temp;
 	size_t		i;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= READ_MAX)
 		return (NULL);
 	remainder[fd] = ft_read_buffer(fd, remainder[fd]);
 	if (!remainder[fd] || !remainder[fd][0])
